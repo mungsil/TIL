@@ -117,6 +117,48 @@ OAuth (Open Auth) : 인증 처리를 대신해준다.
 
 9️⃣번 과정을 통해서 리소스 서버에 저장된 user데이터에 접근할 인가를 받게된다.
 
+자세한 동작원리는 아래 글을 참고하자.
+
+[스프링 시큐리티 OAuth2 동작 원리](https://velog.io/@nefertiri/스프링-시큐리티-OAuth2-동작-원리)
+
+#### 진행 시 유의사항
+```java
+@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/user/**").authenticated()
+                        .requestMatchers("/manager/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .anyRequest().permitAll())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login") //시큐리티가 대신 로그인 진행
+                        .usernameParameter("userID")
+//                        .usernameParameter("username이 아닌 다른 변수명으로 username을 입력받았을 경우의 변수명 입력, ex) username2")
+                        .defaultSuccessUrl("/"))
+												**.oauth2Login(new Customizer<OAuth2LoginConfigurer<HttpSecurity>>() {
+                    @Override
+                    public void customize(OAuth2LoginConfigurer<HttpSecurity> httpSecurityOAuth2LoginConfigurer) {
+                        httpSecurityOAuth2LoginConfigurer.loginPage("/login");
+                    }**
+                });
+
+        return http.build();
+    }
+```
+
+config에서 oauth2Login메서드를 통해 소셜 로그인 페이지를 설정해주지 않으면 에러가 난다.
+
+위 코드를 통해서 직접 만든 login.html으로 소셜 로그인이 가능해진다.
+
+```java
+.oauth2Login(httpSecurityOAuth2LoginConfigurer -> 
+			httpSecurityOAuth2LoginConfigurer.loginPage("/login"));
+```
+람다식으로 변환해서 사용하자.
+
 `reference`
 
 [https://www.inflearn.com/course/스프링부트-시큐리티/dashboard](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0/dashboard)

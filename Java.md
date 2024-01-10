@@ -4,7 +4,7 @@
     - [Collection](#Collection)
     - [Vector](#Vector)
 2. [코딩테스트를 위한 문법 정리](#코딩테스트를-위한-문법-정리)
-    - [여러가지 정리](#✍🏻)
+    - [여러가지 정리](#모음)
     - [배열에 요소 추가하기](#Java-배열에-새-요소를-추가하기)
     - [int와 Integer의 차이점](#int-VS-Integer)
     - [String 배열을 int배열로 변환하기](#String-배열을-int배열로-변환하기)
@@ -33,7 +33,7 @@ String[] arr=new String[6]; //선언과 동시에 null로 초기화
 String[] arr={"나는","감자"}; //선언과 동시에 초기값 지정
 ```
 
-### ✍🏻
+### 모음✍🏻
 **문자열**
 
 - 인수로 받은 값을 String으로 변환

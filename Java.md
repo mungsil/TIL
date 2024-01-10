@@ -16,6 +16,11 @@
 - 인스턴스는 해당 객체가 “특정 클래스로부터 만들어진” 것임을, 즉 해당 객체가 **특정 클래스에 속해있다는 관계성을** 강조한다.
     - Student s = new Student(”감자”);
     - 이때 s(객체)는 Student class의 인스턴스이다. 라고 많이 표현한다.
+ - **OCP 원칙**
+     - Open for extension: 확장에는 열려있고
+     - Closed for modification: 기존 코드의 변경에는 닫혀있자.  
+    새로운 기능을 추가해도 기존 코드에 변경이 없다면, OCP원칙을 지키는 코드라고 이야기할 수 있다.
+  
 ### Collection
 
 [[Java] 자바 - Collection이란? (컬렉션과 제네릭)](https://kadosholy.tistory.com/117#google_vignette)

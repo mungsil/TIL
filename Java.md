@@ -5,7 +5,7 @@
     - [Vector](#Vector)
 2. [코딩테스트를 위한 문법 정리](#코딩테스트를-위한-문법-정리)
     - [여러가지 정리](#모음)
-    - [배열에 요소 추가하기](#Java-배열에-새-요소를-추가하기)
+    - [배열에 요소 추가하기](#Java-배열에-새-요소-추가하기)
     - [int와 Integer의 차이점](#int-VS-Integer)
     - [String 배열을 int배열로 변환하기](#String-배열을-int배열로-변환하기)
     - [stream.foreach()와 for문의 차이점](#Collection.foreach()과-Collection.stream().foreach())

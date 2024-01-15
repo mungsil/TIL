@@ -76,7 +76,7 @@ int[] arr = {4,2,6,3,9}
     - `Arrays.copyOfRange(arr,0,3)` : arr의 0~2번째 배열 반환
     - `Arrays.copyOf(arr,3)` : arr의 0~2번째 배열 반환
       
-### Java 배열에 새 요소를 추가하기
+### 📌 Java 배열에 새 요소를 추가하기
 
 1. array → List, List→ array
 
@@ -192,7 +192,7 @@ Ex) {1,2,3,4}일 때 newLength=2 입력하면 앞에서부터 잘라서 {1,2} re
 
 [Java에서 배열에 새 요소를 추가하는 방법](https://codegym.cc/ko/groups/posts/ko.417.java-eseo-baeyeol-e-sae-yosoleul-chugahaneun-bangbeob)
 
-### int VS Integer
+### 📌 int VS Integer
 
 자바의 자료형에는 Primitive type과 Reference type이 있다. (기본형과 참조형) 
 
@@ -220,18 +220,32 @@ int는 기본형, Integer는 이를 감싸는 래퍼 클래스이다. 간단하�
     ```
     
 - Integer클래스의 intValue 메서드_ Integer 객체를 int형 정수로 변환하여 반환한다.
-### String 배열을 int배열로 변환하기
+### 📌 String 배열을 int배열로 변환하기
+
+1번 방법
 
 ```java
-import java.util.Arrays;
-class MyClass {
-    public static void main(String[] args) {
-        String[] strings = {"1", "2", "3"};
-        int[] nums = Arrays.stream(strings).mapToInt(Integer::parseInt).toArray();
-        System.out.println(Arrays.toString(nums));
-    }
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+String s = br.readLine();
+int[] inputs = Arrays.stream(s.split(" ")).mapToInt(Integer::parseInt).toArray();
+```
+→ 간결하다.
+
+2번 방법
+
+```java
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+int numCount = Integer.parseInt(br.readLine());
+
+int[] arr = new int[numCount];
+
+StringTokenizer st = new StringTokenizer(br.readLine());
+for(int i=0 ; i < numCount ; i++) {
+    arr[i] = Integer.parseInt(st.nextToken());
 }
 ```
+→ StringTokenizer는 공백이 있다면 뒤에 문자열이 공백 자리를 땡겨 채우도록 하므로 1번 방법보다빠르다.
+
 
 🔎mapToInt
 
@@ -240,11 +254,11 @@ stream 내에 있는 Wrapper class를 primitive type으로 변환하는 언박�
 다른 방법: for문을 사용해주면 된다.
 
 
-### Collection.foreach()과 Collection.stream().foreach()
+### 📌 Collection.foreach()과 Collection.stream().foreach()
 
 [Java Collections.forEach vs Collections.stream().forEach()](https://wnwngus.tistory.com/59)
 
-결론_ 되도록 Collection.foreach()를 사용하자. 굳이 Collection.stream.().foreach()를 써서 Stream 객체 생성으로 인한 오버헤드를 감수할 필요는 없다. (map(), filter() 등의 가공이 필요한 경우의 Stream().foreach() 제외)
+결론_ 되도록 Collection.foreach()를 사용하자. 굳이 Collection.stream.().foreach()를 써서 Stream 객체 생성으로 인한 오버헤드를 감수할 필요는 없다. (map(), filter() 등의 가공이 필요한 경우 제외)
 
 ➕ **Collection.for메서드와 Collection.foreach메서드 비교.**
 

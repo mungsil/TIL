@@ -1,0 +1,143 @@
+package likedList;
+
+public class LinkedList {
+    private Node head;
+    private Node tail;
+    private int size = 0;
+
+    private class Node {
+        private Object data;
+        private Node next;
+
+        public Node(Object input) {
+            this.data = input;
+            this.next = null;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "data=" + data +
+                    ", next=" + next.data +
+                    '}';
+        }
+    }
+    @Override
+    public String toString() {
+
+        if (head == null) {
+            return "[]";
+        }
+        Node temp = head;
+        String str="[";
+        while (temp.next != null) {
+            str=str+temp.data+", ";
+            temp = temp.next;
+        }
+        str = str + temp.data;
+        return str + "]";
+    }
+
+    public void addFirst(Object input) {
+        Node newNode = new Node(input);
+        newNode.next = head; //기존 첫 번째 요소가 있었다면 해당 요소를 두 번째로 보내고, null이었다면 null을 두 번째 요소로 둠으로써 요소가 하나뿐이다. 를 표현한다.
+        head = newNode; 
+        size++;
+        //head(newNode)의 next가 null이면 tail=head
+        if (head.next == null) {
+            tail = head;
+        }
+    }
+
+    public void addLast(Object input) {
+
+        Node newNode = new Node(input);
+        if (tail == null) {
+            tail = newNode;
+            head = tail;
+        }  // if(size==0): addFirst(input) 도 가능
+        else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+//  index번에 위치하는 node 리턴(내부적으로 사용되는 부품)
+    private Node node(int index) {
+        //어떠한 element를 가져오고 싶다면 관문으로 첫 번째 노드, 즉 head를 거쳐야한다.
+        Node x = head;
+        for (int i = 0; i < index; i++) {
+            x = x.next;
+        }
+        return x;
+    }
+
+    public void add(int index, Object input) {
+        if (index == 0) {
+            addFirst(input);
+        }
+        else if (index == size-1) {
+            addLast(input);
+        }else {
+            Node newNode = new Node(input);
+            Node x = node(index - 1);
+            newNode.next = x.next;
+            x.next = newNode;
+            size++;
+        }
+    }
+
+    //remove시 삭제된 노드가 갖고 있던 data를 반환한다.
+    public Object removeFirst() {
+        Node rmNode = head;
+        head = head.next;
+        Object data = rmNode.data;
+        rmNode= null;
+        size--;
+        return data;
+    }
+    //index 위치의 요소 삭제
+    public Object remove(int index) {
+        if (index == 0) {
+            return removeFirst();
+        }
+        Node temp = node(index - 1);
+        Node x = temp.next;
+        temp.next = x.next;
+        Object data=x.data;
+        if (x == tail) {
+            tail = temp;
+        }
+        x = null; //굳이 안해도 됨
+        size--;
+        return data;
+    }
+
+    public Object removeLast() {
+        //O(n)
+        return remove(size - 1);
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Object get(int index) {
+        return node(index).data;
+    }
+
+    public int indexOf(Object input) {
+        Node temp = head;
+        int index = 0;
+        while (temp.data != input) {
+            temp = temp.next;
+            index++;
+            if (temp == null) {
+                return -1;
+            }
+        }
+        return index;
+    }
+
+
+}

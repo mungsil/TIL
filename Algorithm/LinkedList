@@ -138,6 +138,57 @@ public class LinkedList {
         }
         return index;
     }
+    public ListIterator listIterator() {
+            return new ListIterator();
+        }
+
+    class ListIterator {
+        private Node next;
+        private Node lastReturned; //현재 가르키고 있는 요소
+        private int nextIndex;
+
+        public ListIterator() {
+            next = head;
+        }
+
+        public Object next() {
+            lastReturned = next;
+            next = next.next;
+            nextIndex++;
+
+            return lastReturned.data;
+        }
+
+        public boolean hasNext() {
+            return nextIndex < size;
+        }
+
+        //next 이전 요소로 추가, next 는 유지
+        public void add(Object input) {
+            Node newNode = new Node(input);
+            if (nextIndex == 0) {
+                newNode.next = head;
+                head = newNode;
+
+            } else {
+                lastReturned.next = newNode;
+                newNode.next = next;
+            }
+
+            lastReturned=newNode;
+            nextIndex++;
+            size++;
+        }
+
+        public void remove() {
+            if (nextIndex == 0) {
+                throw new IllegalArgumentException();
+            }
+            LinkedList.this.remove(nextIndex - 1); //lastReturned = null
+            size--;
+        }
+    }
+
 
 
 }

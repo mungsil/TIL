@@ -1,0 +1,272 @@
+package doublyLinkedList;
+
+
+public class DoublyLinkedList {
+    private Node head;
+    private Node tail;
+    private int size = 0;
+
+    private class Node {
+        private Object data;
+        private Node next;
+        private Node prev;
+
+        public Node(Object input) {
+            this.data = input;
+            this.next = null;
+            this.prev = null;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "data=" + data +
+                    ", next=" + next.data +
+                    '}';
+        }
+    }
+    @Override
+    public String toString() {
+
+        if (head == null) {
+            return "[]";
+        }
+        Node temp = head;
+        String str="[";
+        while (temp.next != null) {
+            str=str+temp.data+", ";
+            temp = temp.next;
+        }
+        str = str + temp.data;
+        return str + "]";
+    }
+
+    public void addFirst(Object input) {
+        Node newNode = new Node(input);
+        newNode.next = head;
+        if (head != null) {
+            head.prev = newNode;
+        }
+        head = newNode; 
+        size++;
+       
+        if (head.next == null) {
+            tail = head;
+        }
+    }
+
+    public void addLast(Object input) {
+
+        Node newNode = new Node(input);
+        if (tail == null) {
+            tail = newNode;
+            head = tail;
+        } 
+        else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+//  index번에 위치하는 node 리턴(내부적으로 사용되는 부품)
+    private Node node(int index) {
+        //어떠한 element를 가져오고 싶다면 관문으로 첫 번째 노드, 즉 head를 거쳐야한다.
+        Node x;
+        if (index < size / 2) {
+            x = head;
+            for (int i = 0; i < index; i++) {
+                x = x.next;
+            }
+        }
+        else {
+            x = tail;
+            for (int i = size - 1; i > index; i--) {
+                x = x.prev;
+            }
+        }
+        return x;
+    }
+
+    public void add(int index, Object input) {
+        if (index == 0) {
+            addFirst(input);
+        }
+        else if (index == size-1) {
+            addLast(input);
+        }else {
+            Node newNode = new Node(input);
+            Node x1 = node(index - 1);
+            Node x2 = x1.next;
+
+            newNode.next = x2;
+            x2.prev = newNode;
+            x1.next = newNode;
+            newNode.prev = x1;
+
+            size++;
+        }
+    }
+
+   
+    public Object removeFirst() {
+        Node rmNode = head;
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        }else {
+            head.prev = null;
+        }
+        Object returnData = rmNode.data;
+        rmNode= null;
+        size--;
+        return returnData;
+    }
+    //index 위치의 요소 삭제
+    public Object remove(int index) {
+        if (index == 0) {
+            return removeFirst();
+        }
+        Node temp1 = node(index - 1);
+        Node x = temp1.next;
+        Node temp2 = x.next;
+        temp2.prev = temp1;
+        temp1.next = temp2;
+        Object returnData=x.data;
+
+        if (x == tail) {
+            tail = temp1;
+        }
+        x = null; 
+        size--;
+        return returnData;
+    }
+
+    public Object removeLast() {
+        return remove(size - 1);
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Object get(int index) {
+        return node(index).data;
+    }
+
+    public int indexOf(Object input) {
+        Node temp = head;
+        int index = 0;
+        
+        while (temp.data != input) {
+            temp = temp.next;
+            index++;
+            if (temp == null) {
+                return -1;
+            }
+        }
+        return index;
+    }
+
+    public ListIterator listIterator() {
+        return new ListIterator();
+    }
+
+    class ListIterator {
+         Node next;
+         Node lastReturned; //현재 가르키고 있는 요소
+         int nextIndex;
+
+        public ListIterator() {
+            next = head;
+        }
+
+        public Object previous() {
+            if (next == null) {
+                lastReturned = next = tail; 
+            } else {
+                lastReturned = next = next.prev;
+            }
+            nextIndex--;
+            return lastReturned.data;
+        }
+
+        public boolean hasPrevious() {
+
+            return nextIndex > 0;
+        }
+
+        public Object next() {
+            lastReturned = next;
+            next = next.next;
+            nextIndex++;
+
+            return lastReturned.data;
+        }
+
+        public boolean hasNext() {
+
+            return nextIndex < size;
+        }
+
+    
+        public void add(Object input) {
+            Node newNode = new Node(input);
+            if (lastReturned == null) {
+                newNode.next = head;
+                head.prev = newNode;
+                head = newNode;
+
+            } else {
+                lastReturned.next = newNode;
+                newNode.prev = lastReturned;
+                if (next != null) {
+                    newNode.next = next;
+                    next.prev = newNode;
+                }else {
+                    tail = newNode;
+                }
+            }
+
+            lastReturned=newNode; 
+            nextIndex++;
+            size++;
+        }
+
+
+        public void remove() {
+            if (lastReturned == null) {
+                throw new IllegalArgumentException();
+            }
+            Node p = lastReturned.prev;
+            Node n = lastReturned.next;
+            Node temp = lastReturned.next;
+
+ 
+            if (p == null) {
+                head = n;
+                head.prev = null;
+                lastReturned.next=null;
+               
+            } else if (n == null) {
+                tail = p;
+                p.next = null;
+                lastReturned.prev = null;
+            }else{
+                p.next = n;
+                n.prev = p;
+            }
+
+            // previous 를 하면 lastReturned=next
+            if (lastReturned == next)
+                next = temp;
+            else
+                nextIndex--;
+
+            lastReturned = null;
+            size--;
+        }
+    }
+
+
+}

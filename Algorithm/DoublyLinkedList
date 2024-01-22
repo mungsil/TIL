@@ -212,27 +212,27 @@ public class DoublyLinkedList {
     
         public void add(Object input) {
             Node newNode = new Node(input);
-            if (lastReturned == null) {
-                newNode.next = head;
-                head.prev = newNode;
-                head = newNode;
-
+            lastReturned = null;
+            if (next == null) { //마지막 요소에 newNode 추가, tail 이용
+                newNode.prev = tail;
+                tail.next = newNode;
+                tail = newNode;
             } else {
-                lastReturned.next = newNode;
-                newNode.prev = lastReturned;
-                if (next != null) {
+                if (next.prev == null) { // addFirst
                     newNode.next = next;
                     next.prev = newNode;
+                    head = newNode;
                 }else {
-                    tail = newNode;
+                    Node temp = next.prev;
+                    temp.next = newNode;
+                    newNode.prev = temp;
+                    next.prev = newNode;
+                    newNode.next = next;
                 }
             }
-
-            lastReturned=newNode; 
-            nextIndex++;
             size++;
+            nextIndex++;
         }
-
 
         public void remove() {
             if (lastReturned == null) {
